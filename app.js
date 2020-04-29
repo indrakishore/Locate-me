@@ -1,4 +1,4 @@
-// Initial Map 
+// Initializing  Map 
 const map = new ol.Map({
     target: 'map-container',
     layers: [
@@ -7,20 +7,21 @@ const map = new ol.Map({
         })
     ],
     view: new ol.View({
-        center: ol.proj.fromLonLat([77.1025, 28.7041]), // initial location set to delhi
+        center: ol.proj.fromLonLat([77.1025, 28.7041]), 
         zoom: 2
     })
 });
-
-const startBtn = document.getElementById('start'); // Button to start trail generation
+// Adding Button for Start Trial
+const startBtn = document.getElementById('start'); 
 const source = new ol.source.Vector();
 const layer = new ol.layer.Vector({
     source: source
 });
 
-startBtn.addEventListener('click', startTrailing); // event
+// Event Listner
+startBtn.addEventListener('click', startTrail); 
 
-function startTrailing() {
+function startTrail() {
     map.addLayer(layer);
 
     // removing footer text
@@ -60,7 +61,7 @@ function startTrailing() {
             maximumAge: 10000
         });
     
-        // Locate button on map
+        // Locating  button on map
         const locate = document.createElement('div');
         locate.className = 'ol-control ol-unselectable locate';
         locate.innerHTML = '<button id="locate" title="Locate me">◎</button>';
@@ -76,7 +77,7 @@ function startTrailing() {
             element: locate
         }));
     } else {
-        alert('Geolocation not supported in this browser.');
+        alert(' Uff! Geolocation not supported in this browser.');
     }
     
 }

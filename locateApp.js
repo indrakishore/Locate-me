@@ -1,83 +1,46 @@
-// Initializing  Map 
-const map = new ol.Map({
-    target: 'map-container',
-    layers: [
-        new ol.layer.Tile({
-            source: new ol.source.OSM()
-        })
-    ],
-    view: new ol.View({
-        center: ol.proj.fromLonLat([77.1025, 28.7041]), 
-        zoom: 2
-    })
-});
-// Adding Button for Start Trial
-const startBtn = document.getElementById('start'); 
-const source = new ol.source.Vector();
-const layer = new ol.layer.Vector({
-    source: source
-});
+// Here creating a map in the 'map' div, and OpenStreet  Map tile
+const map = L.map('map-container').setView([28.7041, 77.1025], 2);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 
-// Event Listner
-startBtn.addEventListener('click', startTrail); 
+//Adding Button to start trail
+const startBtn = document.getElementById('start').addEventListener('click', startTrailing);
 
-function startTrail() {
-    map.addLayer(layer);
 
-    // removing footer text
-    document.querySelector('.footer-text').remove();
+function startTrailing() {  
+ // removing footer text
+    document.querySelector('.footer-text').innerHTML = `<h3>Location Trails: </h3>`;
 
-    if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(function (pos) {
-            const coords = [pos.coords.longitude, pos.coords.latitude];
-            const accuracy = new ol.geom.Polygon(coords, pos.coords.accuracy);
-    
+   if (navigator.geolocation) {
+        navigator.geolocation.watchPosition((pos) => {
+            const coords = [pos.coords.latitude, pos.coords.longitude];
+            
+            // Zooming to the current location
+            map.setView(coords, 15);
+
+            // Marker to the current position
+            L.marker(coords).addTo(map)
+                .bindPopup(`<b>Current Location: </b> ${coords}`).openPopup();
+            
             // adding location trail
             const div = document.createElement('div');
             div.className = 'alert alert-info';
-            div.innerHTML = `<strong>Latitude:</strong> ${pos.coords.latitude} <strong>Longitude:</strong> ${pos.coords.longitude} <strong>Date/Time:</strong> ${Date()}`;
+            div.innerHTML = `<strong>Latitude:</strong> ${pos.coords.latitude} <strong>Longitude:</strong> 
+            ${pos.coords.longitude} <strong>Date/Time:</strong> ${Date()}`;
             document.querySelector('.card-footer').insertBefore(div, document.querySelector('.alert'));
     
-            source.clear(true);
-            source.addFeatures([
-                new ol.Feature(accuracy.transform('EPSG:4326', map.getView().getProjection())),
-                new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat(coords)))
-            ]);
-    
-            if (!source.isEmpty()) {
-                map.getView().fit(source.getExtent(), {
-                    maxZoom: 16,
-                    duration: 500
-                });
-            }
-            
-        }, function (error) {
+            }, (error) => {
             const div = document.createElement('div');
             div.className = 'alert alert-danger mt-3';
-            div.innerHTML = `ERROR: ${error.message} Please refresh and start again.`;
+            div.innerHTML = `ERROR: ${error.message}. Please refresh and start again.`;
             document.querySelector('.card-body').append(document.querySelector('.map-container'), div);
         }, {
+            
             enableHighAccuracy: true,
-            maximumAge: 10000
+        
         });
-    
-        // Locating  button on map
-        const locate = document.createElement('div');
-        locate.className = 'ol-control ol-unselectable locate';
-        locate.innerHTML = '<button id="locate" title="Locate me">◎</button>';
-        locate.addEventListener('click', function () {
-            if (!source.isEmpty()) {
-                map.getView().fit(source.getExtent(), {
-                    maxZoom: 16,
-                    duration: 500
-                });
-            }
-        });
-        map.addControl(new ol.control.Control({
-            element: locate
-        }));
     } else {
-        alert(' Uff! Geolocation not supported in this browser.');
+        alert('Uff Geolocation is not supported in this browser.');
     }
-    
 }

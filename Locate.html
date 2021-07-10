@@ -1,64 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="locateStyle.css"
-    <!--Css Framework from Bootstrap-->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" 
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-        crossorigin="" />
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" 
-          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
-    <style>
-        .map-container {
-            height: 310px;
-            width: 100%;
-            font-family:Arial, Helvetica, sans-serif;
-        }
-
-        .locate {
-            top: 6em;
-            left: .5em;
-        }
-    </style>
-    <title>Location Trail of a Device</title>
-</head>
-
-<body class="bg-dark">
-    <div class="container pt-5">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="float-left">Location Trail Of a Device</h3>
-                        <div id="actions" class="float-right">
-                            <button id="start" class="btn btn-primary btn-sm">Start Trial</button>
-                            <a href="https://github.com/indrakishore/Locate-me" class="btn btn-dark btn-sm">
-                                <i class="fa fa-github"></i> Github Repo</a>
+        <style>
+            .map {
+                height: 50vh;
+            }
+            
+            .addScroll{
+                overflow-y:auto;
+                height: 38vh;
+            }
+    
+            @media screen and (min-width: 760px) {
+                .map {
+                    height: 100vh;
+                }
+                .addScroll {
+                    overflow-y: auto;
+                    height: 85vh;
+                }
+            }
+            
+        </style>
+        <title>Locate Me</title>
+    </head>
+    
+    <body class="bg-dark">
+        <div class="">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-12">
+                    <div class="map" id="map"></div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Location Me</h4>
+                            <div id="actions">
+                                <button id="start" class="btn btn-primary btn-sm"><i class="fa fa-play"></i> Start</button>
+                                <button id="stop" class="btn btn-warning btn-sm"><i class="fa fa-stop"></i> Stop</button>
+                                <button id="startbt" class="btn btn-primary btn-sm"><i class="fa fa-bluetooth"></i> Bluetooth</button>
+                                <a href="https://github.com/indrakishore/Locate-me" target="_blank" class="btn btn-dark btn-sm"><i class="fa fa-github"></i> Github Repo</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="map-container" id="map-container"></div>
-                    </div>
-                    <div class="card-footer">
-                        <span class="footer-text">
-                            Click on Start trial button to retrieve location
-                            and click on button + for Zoom in and - for zoom out.
-                        </span>
-
+                        <div class="card-footer bg-dark text-white addScroll">
+                            <div class="blearea"></div>
+                            <div class="footer-text">
+                                Click on Start button to start generation of location trail.
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <script src="./locateApp.js"></script>
-</body>
-
+    
+        <script src="./locateApp.js"></script>
+        <script src="./blutooth.js"></script>
+    </body> 
 </html>
